@@ -59,7 +59,7 @@ def run(songs)
   
   until user_input == 'exit'
     if user_input == 'list'
-      list
+      list(songs)
     elsif user_input == 'help'
       help
     elsif user_input == 'play'
