@@ -1,60 +1,48 @@
-# Add your code here
-require "pry"
+require 'pry'
+
 
 def help 
-  
   puts "I accept the following commands:"
-  puts "- help : displays this help message"
-  puts "- list : displays a list of songs you can play"
-  puts "- play : lets you choose a song to play"
-  puts "- exit : exits this program"
-  
+  puts  "- help : displays this help message"
+  puts  "- list : displays a list of songs you can play"
+  puts  "- play : lets you choose a song to play"
+  puts  "- exit : exits this program"
 end
 
-
-def list (songs)
+def list(songs)
   
-  songs.each_with_index do |song, index|
-    puts "#{index + 1}. #{song}"
-  end
-  
-end
-
-
-
-def play (songs)
-  
-  song_titles = []
-  
+  counter = 1
   songs.each do |song|
-    song_titles << song.slice(song.index("-")+2, song.length - (song.index("-")+2))
+    puts "#{counter}. " + song
+    counter += 1
   end
   
+end
+
+def play(songs)
   puts "Please enter a song name or number:"
   
   user_input = gets.strip
-  new_user_input = user_input.to_i
-
-
-  if new_user_input > 0 && new_user_input < songs.length
-    if songs[new_user_input-1] != nil
-      puts "Playing #{songs[new_user_input-1]}"
-    else
+  
+  song_names = []
+  
+  songs.each do |song|
+    song_names << songs[song.index("-") + 2, song.length+1]
+  end
+  
+  input_is_song_name = song_names.include?(user_input)
+  input_is_full_name = songs.include?(user_input)
+  
+  if input_is_full_name == false && input_is_song_name == false
+    if songs[user_input.to_i - 1] != nil && user_input.to_i != 0
+      puts "Playing #{songs[user_input.to_i - 1]}"
+    elsif user_input.to_i == 0 || songs[user_input.to_i - 1] == nil
       puts "Invalid input, please try again"
     end
-  elsif user_input.split.include?("-")
-     if songs.index(user_input) != nil
-      puts "Playing #{user_input}"
-     else
-      puts "Invalid input, please try again"
-     end
-  else
-    song_index = song_titles.index(user_input)
-    if song_index != nil
-      puts "Playing #{songs[song_index]}"
-    else
-      puts "Invalid input, please try again"
-    end
+  elsif input_is_song_name 
+    puts "Playing #{songs[song_names.index(user_input)]}"
+  elsif input_is_full_name
+    puts "Playing #{songs[songs.index(user_input)]}"
   end
   
 end
@@ -67,31 +55,19 @@ def run(songs)
   
   puts "Please enter a command:"
   
-  user_input =
+  user_input = gets.strip
   
-  while user_input != "exit"
-  
-    user_input = gets.strip
-    
-    if user_input == "list"
-      list(songs)
-    end
-    
-    if user_input == "play"
+  until user_input == 'exit'
+    if user_input == 'list'
+      list()
+    elsif user_input == 'help'
+      help()
+    elsif user_input == 'play'
       play(songs)
     end
-  
-    if user_input == "help"
-      help()
-    end
-  
-    if user_input == "exit"
-      exit_jukebox()
-      break
-    end
-  
+    user_input = gets.strip
   end
   
-  
-  
 end
+
+
